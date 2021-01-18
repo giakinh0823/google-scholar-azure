@@ -1,0 +1,217 @@
+{% extends 'base/base.html' %} {% block body %}
+
+
+<script>
+    var myModal = document.getElementById('myModal')
+    var myInput = document.getElementById('myInput')
+
+    myModal.addEventListener('shown.bs.modal', function() {
+        myInput.focus()
+    })
+</script>
+<style>
+
+    .radio--checked--primary{
+
+    }
+
+    .radio--checked--primary:checked{
+        background-color:  orangered;
+        border-color:  orangered;
+    }
+    .radio--checked--primary:focus{
+        border-color: orangered ;
+        outline: 0;
+        box-shadow: none;
+    }
+    .button-primary-orangered{
+        padding: 6px 20px;
+        border: 1px solid black;
+    }
+    .button-primary-orangered:hover{
+        background-color:  orangered;
+        color: #212529;
+        border: 1px solid orangered;
+    }
+    .button--outline--primary{
+        {% comment %} border: 1px solid orangered; {% endcomment %}
+        background-color: #fff;
+    }
+    .button--outline--primary:focus{
+        outline: none;
+        border: 1px solid orangered;
+        box-shadow: none;
+        background-color: #fff!important;
+    }
+    .text-primary-orange{
+        color: orangered;
+        font-weight: 400;
+    }
+</style>
+
+<div class="container">
+    <div class="row d-flex justify-content-center align-items-center mb-5 mt-2" style="">
+        <div class="col-md-6">
+            <div class="mb-3" style="position: relative">
+                <h1 class="display-4 text-center" id="headerhome">Article</h1>
+                <p class="" style="font-size:15px;color:red; outline:none; border:none; font-weight:300; position:absolute; top:90%; right:30%" id="searchsmall">Search</p>
+            </div>
+            <form action="{% url 'article:article' %}" method="GET" class="d-flex" id="homeSearchForm">
+                <input type="text" name="title" id="id_title" class="form-control button--outline--primary">
+                <button type="submit" class="btn button-primary-orangered">Search</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="list-group">
+        {% for article in articles %}
+        <a type="button" data-bs-toggle="modal" data-bs-target="#article-{{article.id}}" class="list-group-item list-group-item-action " style="display:block;min-height:160px">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">{{article.title}}</h5>
+                {% if article.date_created %}
+                <small>{{article.date_created}}</small>
+                {% endif %}
+            </div>
+            {% if article.author %}
+            <p class="mb-1">{{article.author}}</p>
+            {% endif %}
+             {% if article.conference %}
+            <p class="mb-1">{{article.conference}}</p>
+            {% endif %}
+             {% if article.total_citations %}
+            <p class="mb-1" style="overflow: hidden;text-overflow: ellipsis; display: -webkit-box;-webkit-line-clamp: 2; -webkit-box-orient: vertical;">{{article.description}}</p>
+            <small>{{article.total_citations}} citations</small>
+            {% endif %}
+        </a>
+        <div class="modal fade" id="article-{{article.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <!-- <h5 class="modal-title" id="exampleModalLabel">title</h5> -->
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3" style="padding-left:20px;">
+                            <h5 style="">
+                                <a href="#" style="text-decoration:none; color:orangered">{{article.title}}</a>
+                            </h5>
+                        </div>
+                        <div>
+                            <div class="">
+                                {% if article.author %}
+                                <div class="row">
+                                    <div class="col-2 text-end text-primary-orange">
+                                        Author
+                                    </div>
+                                    <div class="col-8">
+                                        {{article.author}}
+                                    </div>
+                                </div>
+                                {% endif %} {% if article.publication_date %}
+                                <div class="row">
+                                    <div class="col-2 text-end text-primary-orange">
+                                        Publication date
+                                    </div>
+                                    <div class="col-8">
+                                        {{article.publication_date}}
+                                    </div>
+                                </div>
+                                {% endif %} {% if article.journal %}
+                                <div class="row">
+                                    <div class="col-2 text-end text-primary-orange">
+                                        Journal
+                                    </div>
+                                    <div class="col-8">
+                                        {{article.journal}}
+                                    </div>
+                                </div>
+                                {% endif %} {% if article.book %}
+                                <div class="row">
+                                    <div class="col-2 text-end text-primary-orange">
+                                        Book
+                                    </div>
+                                    <div class="col-8">
+                                        {{article.book}}
+                                    </div>
+                                </div>
+                                {% endif %} {% if article.conference %}
+                                <div class="row">
+                                    <div class="col-2 text-end text-primary-orange">
+                                        Conference
+                                    </div>
+                                    <div class="col-8">
+                                        {{article.conference}}
+                                    </div>
+                                </div>
+                                {% endif %} {% if article.volume %}
+                                <div class="row">
+                                    <div class="col-2 text-end text-primary-orange">
+                                        Volume
+                                    </div>
+                                    <div class="col-8">
+                                        {{article.volume}}
+                                    </div>
+                                </div>
+                                {% endif %} {% if article.page %}
+                                <div class="row">
+                                    <div class="col-2 text-end text-primary-orange">
+                                        Page
+                                    </div>
+                                    <div class="col-8">
+                                        {{article.page}}
+                                    </div>
+                                </div>
+                                {% endif %} {% if article.publisher %}
+                                <div class="row">
+                                    <div class="col-2 text-end text-primary-orange">
+                                        Publisher
+                                    </div>
+                                    <div class="col-8">
+                                        {{article.publisher}}
+                                    </div>
+                                </div>
+                                {% endif %} {% if article.description %}
+                                <div class="row">
+                                    <div class="col-2 text-end text-primary-orange">
+                                        Description
+                                    </div>
+                                    <div class="col-8">
+                                        {{article.description}}
+                                    </div>
+                                </div>
+                                {% endif %} {% if article.total_citations %}
+                                <div class="row">
+                                    <div class="col-2 text-end text-primary-orange">
+                                        Total Citations
+                                    </div>
+                                    <div class="col-8">
+                                        {{article.total_citations}}
+                                    </div>
+                                </div>
+                                {% endif %}
+                                <div class="row">
+                                    <div class="col-2 text-end text-primary-orange">
+                                        Scholar articles
+                                    </div>
+                                    <div class="col-8">
+                                        <a href="" style="text-decoration: none; color:orangered">{{article.title}}</a>
+                                        <p style="margin: 0">{{article.author}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock body %}

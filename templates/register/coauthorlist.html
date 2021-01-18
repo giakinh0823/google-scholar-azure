@@ -1,0 +1,68 @@
+<div id="searchCoauthor_results">
+    {% comment %} {{CoAuthorForm.as_p}} {% endcomment %}
+    <form id="#coAuthor">
+        {% csrf_token %}
+        <ul id="id_coAuthor" class="" style="list-style-type:none; margin:0; padding:0">
+            {% for profileitem in profilelist %} {% if not profileitem.user == user %}
+            <li>
+                <div>
+                    <label for="id_coAuthor_{{profileitem.id|add:-1}}" class="form-check-label d-flex align-items-center">
+                    <div class="d-flex pt-3 pb-3 align-items-center">
+                        <div>
+                            <div class="avatar" style="width:80px; height:80px">
+                                {% if profileitem.avatar %}
+                                <img src="{{profileitem.avatar.url}}" alt="" style="width:100%;height:100%; border-radius:50%"> 
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="ms-3">
+                        <a href="{% url 'register:profiledetail' profileitem.id %}" class="text-dark text-decoration-none">
+                            <p style="margin: 0;" class="link-success"> {{profileitem.name}}</p>
+                        </a>
+                            <p style="margin: 0;">{{profileitem.Affiliation}}</p>
+                            {% if profileitem.EmailForVerification %}
+                            <p style="margin: 0;">{{profileitem.EmailForVerification}}</p>
+                            {% endif %}
+                        </div>
+                        </div>
+                    </lable>
+                    <style>
+                        input[type=checkbox]{
+                            /* Double-sized Checkboxes */
+                            -ms-transform: scale(1.3); /* IE */
+                            -moz-transform: scale(1.3); /* FF */
+                            -webkit-transform: scale(1.3); /* Safari and Chrome */
+                            -o-transform: scale(1.3); /* Opera */
+                            padding: 4px;
+                            }
+                    </style>
+                    <input type="checkbox" name="coAuthor" value="{{profileitem.id}}" id="id_coAuthor_{{profileitem.id|add:-1}}" class="ms-auto chekboxCoAuthor" data-id="{{profileitem.id}}" {% if profileitem.id in coAuthorList %}checked{% endif %}>
+                </div>
+            </li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+    </form>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        
+        $(document).ready(function() {
+            $('.chekboxCoAuthor').click(function() {
+                id = $(this).data('id')
+                $.ajax({
+                    type: "POST",
+                    url: "",
+                    data: {
+                        "id": id,
+                        "csrfmiddlewaretoken": csrftokenSaveCoauthor,
+                    },
+                    dataType: 'html',
+                    success: function(data, textStatus, jqXHR) {
+                        $('#listCoAuthorProfile').html(data)
+                        alert("Add Co-Author Success")
+                    },
+                });
+            })
+        })
+    </script>
+</div>

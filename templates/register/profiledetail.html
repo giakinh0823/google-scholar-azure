@@ -1,0 +1,410 @@
+{% extends 'base/base.html' %} {% block body %} {% load static %}
+{% load index %}
+
+<style>
+    #chartdiv {
+      width: 100%;
+      height: 380px;
+    }
+    .btn-outline-orange{
+        color: orangered;
+        border:1px solid orangered;
+    }
+    .btn-outline-orange:hover{
+        color: #dadada;
+        background-color: orangered;
+    }
+    .btn-outline-orange:focus{
+        box-shadow: none;
+        border: 1px solid orangered;
+        outline: none;    
+    }
+    .text-primary-orange{
+        color: orangered;
+        font-weight: 400;
+    }
+</style>
+    <!-- Chart code -->
+<script>
+    am4core.ready(function() {
+    
+    // Themes begin
+    am4core.useTheme(am4themes_animated);
+    // Themes end
+    
+    var chart = am4core.create("chartdiv", am4plugins_wordCloud.WordCloud);
+    chart.fontFamily = "";
+    var series = chart.series.push(new am4plugins_wordCloud.WordCloudSeries());
+    series.randomness = 0.1;
+    series.rotationThreshold = 0.5;
+    series.minFontSize = 10;
+    
+
+    {% comment %} series.data = [ {
+        "tag": "validation",
+        "count": "55531"
+    } ]; {% endcomment %}
+
+    series.data = [
+        {% for item in datatitle %}
+          { "tag": "{{ labeltitle|index:forloop.counter0 }}",
+            "count": "{{ datatitle|index:forloop.counter0 }}"
+          },
+        {% endfor %}
+    ]
+    
+    series.dataFields.word = "tag";
+    series.dataFields.value = "count";
+    
+    series.heatRules.push({
+     "target": series.labels.template,
+     "property": "fill",
+     "min": am4core.color("#000000"),
+     "max": am4core.color("#FF4500"), //green
+     "dataField": "value"
+    });
+    
+    <!-- series.labels.template.url = ""; -->
+    <!-- series.labels.template.urlTarget = "_blank"; -->
+    series.labels.template.tooltipText = "{word}: {value}";
+    
+    var hoverState = series.labels.template.states.create("hover");
+    hoverState.properties.fill = am4core.color("#000");
+
+
+    
+    //done care
+
+    {% comment %} var subtitle = chart.titles.create();
+    subtitle.text = "(click to open)";
+    
+    var title = chart.titles.create();
+    title.text = "Scholar";
+    title.fontSize = 20;
+    title.fontWeight = "800"; {% endcomment %}
+    
+    }); // end am4core.ready()
+</script>
+    
+    <!-- HTML -->
+{% if datatitle %}
+<div id="chartdiv"></div>
+{% endif %}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-8">
+        <div class="row">
+                <div>
+                    {% if datatitle %}
+                    <div class="container" style="">
+                        <canvas id="pie-chart-title"></canvas>
+                    </div>
+                    {% endif %}
+                    <script>
+                        var ctx = document.getElementById('pie-chart-title').getContext('2d');
+                        var myChart = new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: {{labeltitle|safe}},
+                                datasets: [{
+                                    label: 'keyword',
+                                    data: {{datatitle|safe}},
+                                    backgroundColor: [
+                                    {%for x in datatitle %}
+                                        'rgba(211, 84, 0, 1)', 
+                                    {% endfor %}
+                                    ],
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true
+                                        }
+                                    }]
+                                }
+                            }
+                        });
+                    </script>
+                </div>
+            </div>
+            <div class="row">
+                <div class="d-flex align-items-center">
+                    <div class="avatar" style="">
+                        {% if profile.avatar %}
+                        <img src="{{profile.avatar.url}}" alt="" style="width:150px; height:150px; border-radius:50%; object-fit:cover"> {% endif %}
+                    </div>
+                    <div class="ms-4">
+                        <p>{{profile.name}}</p>
+                        <p>{{profile.Affiliation}}</p>
+                        {% if profile.EmailForVerification %}
+                        <p>{{profile.EmailForVerification}}</p>
+                        {% endif %}
+                    </div>
+                    <div class="ms-auto align-self-center">
+                        <button class="btn btn-outline-orange">follow</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="list-group">
+                    <table class="table table-hover">
+                        <thead>
+                            <th class="col">
+                                <div class="d-flex">
+                                    <p class="text-primary-orange">TITLE</p>
+                                </div>
+                            </th>
+                            <th class="col-2 text-center">
+                                <div>
+                                    <p class="text-primary-orange">CYTED BY</p>
+                                </div>
+                            </th>
+                            <th class="col-2 text-center">
+                                <div>
+                                    <p class="text-primary-orange">YEAR</p>
+                                </div>
+                            </th>
+                        </thead>
+                        <tbody>
+                            {% for article in articles %}
+                            <tr>
+                                <td class="col">
+                                    <a type="button" data-bs-toggle="modal" data-bs-target="#article-{{article.id}}">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1" style="margin:0;overflow: hidden;text-overflow: ellipsis; display: -webkit-box;-webkit-line-clamp: 2; -webkit-box-orient: vertical;">{{article.title}}</h5>
+                                        </div>
+                                        {% if article.author %}
+                                        <p class="mb-1"  style="margin:0;overflow: hidden;text-overflow: ellipsis; display: -webkit-box;-webkit-line-clamp: 2; -webkit-box-orient: vertical;">{{article.author}}</p>
+                                        {% endif %} {% if article.conference %}
+                                        <p class="mb-1"  style="margin:0;overflow: hidden;text-overflow: ellipsis; display: -webkit-box;-webkit-line-clamp: 2; -webkit-box-orient: vertical;">{{article.conference}}</p>
+                                        {% endif %}
+                                    </a>
+                                </td>
+                                {% if article.total_citations %}
+                                <td class="col-2 text-center">{{article.total_citations}}</td>
+                                {% else %}
+                                <td class="text-center">_</td>
+                                {% endif %} {% if article.publication_date %}
+                                <td class="col-2 text-center">{{article.publication_date}}</td>
+                                {% else %}
+                                <td class="text-center">_</td>
+                                {% endif %}
+                            </tr>
+                            <div class="modal fade" id="article-{{article.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <!-- <h5 class="modal-title" id="exampleModalLabel">title</h5> -->
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="mb-3" style="padding-left:20px;">
+                                                <h5 style="">
+                                                    <a href="#"
+                                                        style="text-decoration:none; color:orangered">{{article.title}}</a>
+                                                </h5>
+                                            </div>
+                                            <div>
+                                                <div class="">
+                                                    {% if article.author %}
+                                                    <div class="row">
+                                                        <div class="col-2 text-end text-primary-orange">
+                                                            Author
+                                                        </div>
+                                                        <div class="col-8">
+                                                            {{article.author}}
+                                                        </div>
+                                                    </div>
+                                                    {% endif %} {% if article.publication_date %}
+                                                    <div class="row">
+                                                        <div class="col-2 text-end text-primary-orange">
+                                                            Publication date
+                                                        </div>
+                                                        <div class="col-8">
+                                                            {{article.publication_date}}
+                                                        </div>
+                                                    </div>
+                                                    {% endif %} {% if article.journal %}
+                                                    <div class="row">
+                                                        <div class="col-2 text-end text-primary-orange">
+                                                            Journal
+                                                        </div>
+                                                        <div class="col-8">
+                                                            {{article.journal}}
+                                                        </div>
+                                                    </div>
+                                                    {% endif %} {% if article.book %}
+                                                    <div class="row">
+                                                        <div class="col-2 text-end text-primary-orange">
+                                                            Book
+                                                        </div>
+                                                        <div class="col-8">
+                                                            {{article.book}}
+                                                        </div>
+                                                    </div>
+                                                    {% endif %} {% if article.conference %}
+                                                    <div class="row">
+                                                        <div class="col-2 text-end text-primary-orange">
+                                                            Conference
+                                                        </div>
+                                                        <div class="col-8">
+                                                            {{article.conference}}
+                                                        </div>
+                                                    </div>
+                                                    {% endif %} {% if article.volume %}
+                                                    <div class="row">
+                                                        <div class="col-2 text-end text-primary-orange">
+                                                            Volume
+                                                        </div>
+                                                        <div class="col-8">
+                                                            {{article.volume}}
+                                                        </div>
+                                                    </div>
+                                                    {% endif %} {% if article.page %}
+                                                    <div class="row">
+                                                        <div class="col-2 text-end text-primary-orange">
+                                                            Page
+                                                        </div>
+                                                        <div class="col-8">
+                                                            {{article.page}}
+                                                        </div>
+                                                    </div>
+                                                    {% endif %} {% if article.publisher %}
+                                                    <div class="row">
+                                                        <div class="col-2 text-end text-primary-orange">
+                                                            Publisher
+                                                        </div>
+                                                        <div class="col-8">
+                                                            {{article.publisher}}
+                                                        </div>
+                                                    </div>
+                                                    {% endif %} {% if article.description %}
+                                                    <div class="row">
+                                                        <div class="col-2 text-end text-primary-orange">
+                                                            Description
+                                                        </div>
+                                                        <div class="col-8">
+                                                            {{article.description}}
+                                                        </div>
+                                                    </div>
+                                                    {% endif %} {% if article.total_citations %}
+                                                    <div class="row">
+                                                        <div class="col-2 text-end text-primary-orange">
+                                                            Total Citations
+                                                        </div>
+                                                        <div class="col-8">
+                                                            {{article.total_citations}}
+                                                        </div>
+                                                    </div>
+                                                    {% endif %}
+                                                    <div class="row">
+                                                        <div class="col-2 text-end text-primary-orange">
+                                                            Scholar articles
+                                                        </div>
+                                                        <div class="col-8">
+                                                            <a href=""
+                                                                style="text-decoration: none; color:orangered">{{article.title}}</a>
+                                                            <p style="margin: 0">{{article.author}}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="p-4" style="border-left: 1px solid #dadada">
+                <div class="w-100 d-flex justify-content-center mt-5 mb-5">
+                    <img src="https://i1.wp.com/hanoi.fpt.edu.vn/wp-content/uploads/2018/01/logo.png?fit=237%2C64&ssl=1" alt="" style="width:180px">
+                </div>
+                <div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col">All</th>
+                                <th scope="col">Since 2016</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Citations</td>
+                                <td>{{totalCitations}}</td>
+                                <td>{{totalCitationsSince}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <div class="container" style="">
+                        {% if data %}
+                             <canvas id="pie-chart"></canvas>
+                        {% endif %}
+                    </div>
+                    <script>
+                        var ctx = document.getElementById('pie-chart').getContext('2d');
+                        var myChart = new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: {{labels|safe}},
+                                datasets: [{
+                                    label: 'citations',
+                                    data: {{data|safe}},
+                                    backgroundColor: [
+                                    {% for x in data %}
+                                        'rgba(0, 0, 0, 0.5)', 
+                                    {% endfor %}
+                                    ],
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true
+                                        }
+                                    }]
+                                }
+                            }
+                        });
+                    </script>
+                </div>
+                <div class="" style="border-top:1px solid #dadada" id="listCoAuthorProfile">
+                    {% for item in authorlist %}
+                    <a class="text-dark text-decoration-none m-1" href="{% url 'register:profiledetail' item.coAuthor.id %}">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar" style="width:30px; height:30px">
+                                {% if item.coAuthor.avatar %}
+                                <img src="{{item.coAuthor.avatar.url}}" alt="" style="width:30px; height:30px; border-radius:50%"> {% endif %}
+                            </div>
+                            <div class="ms-2">
+                                <p style="margin: 0;" class="" style="color: orangered;font-weight:400"> {{item.coAuthor.name}}</p>
+                                <p style="margin:0;overflow: hidden;text-overflow: ellipsis; display: -webkit-box;-webkit-line-clamp: 1; -webkit-box-orient: vertical;">{{item.coAuthor.Affiliation}}</p>
+                            </div>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock body %}

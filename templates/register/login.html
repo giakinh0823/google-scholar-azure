@@ -1,0 +1,56 @@
+{% extends 'base/base.html' %} {% block body %}
+
+
+
+<h1 class="text-center mt-5 mb-4 display-1" style="font-size:7rem">Login</h1>
+
+{% if error %}
+  <div class="mb-3 mt-5 w-100 d-flex justify-content-center align-items-center" role="alert" >
+    <div class="w-50 alert alert-secondary">{{ error }}</div> 
+  </div>
+{% endif %}
+<form action="" method="POST" class="d-flex flex-column align-items-center" style="color:orangered;">
+  {% csrf_token %}
+  <div class="mb-3 w-50">
+    <label for="id_username" class="form-label">Username</label>
+    <input type="text" name="username" autofocus autocapitalize="none" required autocomplete="username" id="id_username" class="form-control button--outline--primary">
+  </div>
+  <div class="mb-3 w-50">
+    <label for="id_password" class="form-label">Password</label>
+    <input type="password" name="password" autocomplete="current-password"  required id="id_password" class="form-control button--outline--primary">
+  </div>
+  <a href="{% url 'register:signup' %}" class="mb-3" style="text-decoration: none; color: #212529; font-size: 16px ;color:orangered;">Signup here</a>
+  <button type="submit" class="btn button-primary-orangered">login</button>
+</form>
+<style>
+    .button-primary-orangered{
+        padding: 6px 30px;
+        border: 1px solid black;
+    }
+    .button-primary-orangered:hover{
+        background-color:  orangered;
+        color: #212529;
+        border: 1px solid orangered;
+    }
+    .button--outline--primary{
+        {% comment %} border: 1px solid orangered; {% endcomment %}
+        background-color: #fff;
+    }
+    .button--outline--primary:focus{
+        outline: none;
+        border: 1px solid orangered;
+        box-shadow: none;
+        background-color: #fff!important;
+    }
+</style>
+
+
+{% comment %} <div class="container justify-content-center d-flex">
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div> {% endcomment %}
+
+{% endblock body %}

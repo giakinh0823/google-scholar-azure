@@ -1,0 +1,17 @@
+<div class="" style="border-top:1px solid #dadada" id="listCoAuthorProfile">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    {% for item in authorlist %}
+    <a class="text-dark text-decoration-none m-1" href="{% url 'register:profiledetail' item.coAuthor.id %}">
+        <div class="d-flex align-items-center">
+            <div class="avatar" style="width:30px; height:30px">
+                {% if item.coAuthor.avatar %}
+                <img src="{{item.coAuthor.avatar.url}}" alt="" style="width:30px; height:30px; border-radius:50%;object-fit:cover"> {% endif %}
+            </div>
+            <div class="ms-2">
+                <p style="margin: 0;" class="link-success"> {{item.coAuthor.name}}</p>
+                <p style="margin:0;overflow: hidden;text-overflow: ellipsis; display: -webkit-box;-webkit-line-clamp: 1; -webkit-box-orient: vertical;">{{item.coAuthor.Affiliation}}</p>
+            </div>
+        </div>
+    </a>
+    {% endfor %}
+</div>

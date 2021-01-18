@@ -1,0 +1,68 @@
+{% extends 'base/base.html' %} {% block body %}
+
+<div class="container">
+    <div class="w-100 d-flex justify-content-center mt-5">
+        <img src="https://i1.wp.com/hanoi.fpt.edu.vn/wp-content/uploads/2018/01/logo.png?fit=237%2C64&ssl=1" alt="" style="width:220px">
+    </div>
+    <div class="row d-flex justify-content-center align-items-center" style="height: 55vh">
+        <div class="col-md-6">
+            <div class="mb-5" style="position: relative">
+                <h1 class="display-1 text-center" id="headerhome">Article</h1>
+                <p class="" style="font-size:15px;color:red; outline:none; border:none; font-weight:300; position:absolute; top:90%; right:30%" id="searchsmall">Search</p>
+            </div>
+            <form action="{% url 'article:article' %}" method="GET" class="d-flex" id="homeSearchForm">
+                <input type="text" name="title" id="id_title" class="form-control button--outline--primary">
+                <button type="submit" class="btn button-primary-orangered">Search</button>
+            </form>
+            <div class="d-block text-center mt-3" style="radioArticle1">
+                <div class="form-check form-check-inline" id="">
+                    <input class="form-check-input radio--checked--primary" type="radio" name="inlineRadioOptions" id="radioArticle" value="{% url 'article:article' %}" checked>
+                    <label class="form-check-label" for="radioArticle">Article</label>
+                </div>
+                <div class="form-check form-check-inline" id="radioUser1">
+                    <input class="form-check-input radio--checked--primary" type="radio" name="inlineRadioOptions" id="radioUser" value="{% url 'register:listprofile' %}">
+                    <label class="form-check-label" for="radioUser">User</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+
+    .radio--checked--primary{
+
+    }
+
+    .radio--checked--primary:checked{
+        background-color:  orangered;
+        border-color:  orangered;
+    }
+    .radio--checked--primary:focus{
+        border-color: orangered ;
+        outline: 0;
+        box-shadow: none;
+    }
+    .button-primary-orangered{
+        padding: 6px 20px;
+        border: 1px solid black;
+    }
+    .button-primary-orangered:hover{
+        background-color:  orangered;
+        color: #212529;
+        border: 1px solid orangered;
+    }
+    .button--outline--primary{
+        {% comment %} border: 1px solid orangered; {% endcomment %}
+        background-color: #fff;
+    }
+    .button--outline--primary:focus{
+        outline: none;
+        border: 1px solid orangered;
+        box-shadow: none;
+        background-color: #fff!important;
+    }
+</style>
+
+{% endblock body %}

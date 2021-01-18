@@ -1,0 +1,10 @@
+{% extends 'base/base.html' %} {% block body %}
+
+<div class="container justify-content-center d-flex">
+    <form action="" method="POST">
+        {% csrf_token %} {{articleForm.as_p}}
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+{% endblock body %}

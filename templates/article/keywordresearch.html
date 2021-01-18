@@ -1,0 +1,69 @@
+{% extends 'base/base.html' %} {% block body %}
+
+
+<div class="container">
+<div class="w-100 d-flex justify-content-center mt-5">
+        <img src="https://i1.wp.com/hanoi.fpt.edu.vn/wp-content/uploads/2018/01/logo.png?fit=237%2C64&ssl=1" alt="" style="width:180px">
+</div>
+    {% comment %} <div class="row d-flex justify-content-center align-items-center mt-3" style="">
+        <div class="col-md-6">
+            <div class="mb-5" style="position: relative">
+                <h1 class="display-1 text-center" id="headerhome" style="color:orangered">Key word</h1>
+            </div>
+        </div>
+    </div> {% endcomment %}
+</div>
+
+
+<div class="container mt-5" style="width: 75%;">
+    <canvas id="pie-chart"></canvas>
+</div>
+
+<script>
+   
+    var ctx = document.getElementById('pie-chart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: {{ labels|safe }},
+            datasets: [{
+                label: 'quantity',
+                data: {{ data|safe }},
+                 backgroundColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    {% for x in data %}
+                     'rgba(211, 84, 0, 0.7)',
+                    {% endfor %}
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    {% for x in data %}
+                     'rgba(211, 84, 0, 1)',
+                    {% endfor %}
+                    ], 
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+</script>
+
+{% endblock %}
