@@ -173,13 +173,7 @@ USE_TZ = True
 
 
 
-# STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-STATICFILES_DIRS = [
-    STATIC_DIR,
-]
 
 # MEDIA_URL = '/media/'
 
@@ -210,7 +204,13 @@ MEDIA_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{MEDIA_LOCATION}/'
 STATICFILES_STORAGE = 'storages.backends.azure_storage.AzureStorage'
 DEFAULT_FILE_STORAGE = 'Scholar.custom_azure.AzureMediaStorage'
 
+STATIC_URL = '/static/'
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATICFILES_DIRS = [
+    STATIC_DIR,
+]
 
 
 LOGIN_URL = '/login/'
