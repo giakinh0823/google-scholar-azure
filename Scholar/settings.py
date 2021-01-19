@@ -32,7 +32,7 @@ SECRET_KEY = '+x4!f602mag83_ul4jez)x$h+bh^&#dh51x@ow(s3@1u@46-g6'
 
 # ALLOWED_HOSTS = []
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -125,7 +125,7 @@ DATABASES = {
 }
 
 # set this to False if you want to turn off pyodbc's connection pooling
-DATABASE_CONNECTION_POOLING = False
+# DATABASE_CONNECTION_POOLING = False
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
