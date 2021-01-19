@@ -114,8 +114,8 @@ DATABASES = {
         'NAME': 'dataScholar',
         'USER': 'giakinh0823',
         'PASSWORD': 'Danhancach0823',
-        'HOST': 'database-giakinh.database.windows.net',
-        'PORT': '',
+        'HOST': 'tcp:database-giakinh.database.windows.net',
+        'PORT': '1433',
         'OPTIONS': {
             'unicode_results':True,
             'extra_params': 'ClientCharset=utf8',
