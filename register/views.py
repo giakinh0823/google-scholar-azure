@@ -84,27 +84,27 @@ def profile(request):
     totalCitations=0
     totalCitationsSince=0
     if articlelist:
-        articlelist = articlelist.order_by('-publication_date')
+        articlelist = articlelist.order_by('-year')
         index = 0
-        while not articlelist[index].publication_date:
+        while not articlelist[index].year:
             index+=1
-        print(index)
         if index==len(articlelist)-1:
-            exit()
-        max = int(str(articlelist[0].publication_date)[0:4])
+            max=0
+        else:
+            max = int(articlelist[0].year)
         index =len(articlelist)-1
-        while not articlelist[index].publication_date:
+        while not articlelist[index].year:
             index-=1
-        print(index)
         if index==0:
-            exit()
-        min = int(str(articlelist[index].publication_date)[0:4])
+            min=0
+        else:
+            min = int(articlelist[index].year)
         for x in range(min, max+1):
             labels.append(x)
             cyted = 0 
             for article in articlelist:
-                if article.publication_date:
-                    if x == int(str(article.publication_date)[0:4]):
+                if article.year:
+                    if x == int(article.year):
                         if article.total_citations:
                             cyted += int(article.total_citations)
                             totalCitations+=int(article.total_citations)
@@ -207,25 +207,27 @@ def profiledetail(request, profile_pk):
     totalCitations=0
     totalCitationsSince=0
     if articlelist:
-        articlelist = articlelist.order_by('-publication_date')
+        articlelist = articlelist.order_by('-year')
         index = 0
-        while not articlelist[index].publication_date:
+        while not articlelist[index].year:
             index+=1
         if index==len(articlelist)-1:
-            exit()
-        max = int(str(articlelist[0].publication_date)[0:4])
+            max=0
+        else:
+            max = int(articlelist[0].year)
         index =len(articlelist)-1
-        while not articlelist[index].publication_date:
+        while not articlelist[index].year:
             index-=1
         if index==0:
-            exit()
-        min = int(str(articlelist[index].publication_date)[0:4])
+            min=0
+        else:
+            min = int(articlelist[index].year)
         for x in range(min, max+1):
             labels.append(x)
             cyted = 0 
             for article in articlelist:
-                if article.publication_date:
-                    if x == int(str(article.publication_date)[0:4]):
+                if article.year:
+                    if x == int(article.year):
                         if article.total_citations:
                             cyted += int(article.total_citations)
                             totalCitations+=int(article.total_citations)
@@ -260,6 +262,7 @@ def addArticle(request):
         if form_article.is_valid():
             article = form_article.save(commit=False)
             article.user = request.user
+            article.year = int(str(article.publication_date)[:4])
             article.save()
         else:
             raise forms.ValidationError("wrong format")
