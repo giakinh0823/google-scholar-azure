@@ -1,0 +1,1 @@
+web: gunicorn Scholar.wsgi --log-file -
