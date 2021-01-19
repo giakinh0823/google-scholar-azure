@@ -267,3 +267,6 @@ def addArticle(request):
         else:
             raise forms.ValidationError("wrong format")
         return JsonResponse({"ok": "ok"})
+    
+    
+
