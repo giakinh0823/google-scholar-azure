@@ -27,6 +27,11 @@ MEDIA_ROOT  = os.path.join(BASE_DIR, 'media')
 SECRET_KEY = '+x4!f602mag83_ul4jez)x$h+bh^&#dh51x@ow(s3@1u@46-g6'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+
+# DEBUG = True
+
+# ALLOWED_HOSTS = []
+
 DEBUG = False
 
 ALLOWED_HOSTS = ['*']
@@ -87,13 +92,29 @@ WSGI_APPLICATION = 'Scholar.wsgi.application'
 #     }
 # }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'sql_server.pyodbc',
+#         'NAME': 'testData',
+#         'USER': '',
+#         'PASSWORD': '',
+#         'HOST': 'DESKTOP-EF058DF',
+#         'PORT': '',
+#         'OPTIONS': {
+#             'unicode_results':True,
+#             'extra_params': 'ClientCharset=utf8',
+#             'driver': 'ODBC Driver 17 for SQL Server',
+#         },
+#     },
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'sql_server.pyodbc',
-        'NAME': 'testData',
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': 'DESKTOP-EF058DF',
+        'NAME': 'dataScholar',
+        'USER': 'giakinh0823',
+        'PASSWORD': 'Danhancach0823',
+        'HOST': 'database-giakinh.database.windows.net',
         'PORT': '',
         'OPTIONS': {
             'unicode_results':True,
@@ -103,6 +124,8 @@ DATABASES = {
     },
 }
 
+# set this to False if you want to turn off pyodbc's connection pooling
+DATABASE_CONNECTION_POOLING = False
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
