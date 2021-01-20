@@ -22,6 +22,8 @@ FPT University
 
 ## Settings
 
+Delete Foder .azure (googleScholarAzure/)
+
 git clone https://github.com/giakinh0823/googleScholarAzure.git
 
 cd googleScholarAzure
