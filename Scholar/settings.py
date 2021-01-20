@@ -120,7 +120,7 @@ DATABASES = {
         'USER': 'giakinh0823',
         'PASSWORD': 'Danhancach0823',
         'HOST': 'tcp:database-giakinh.database.windows.net',
-        'PORT': '1433',
+        'PORT': '',
         'OPTIONS': {
             'unicode_results':True,
             'extra_params': 'ClientCharset=utf8',
@@ -167,10 +167,6 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
-
-
-
-
 
 
 
