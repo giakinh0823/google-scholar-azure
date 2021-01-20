@@ -30,6 +30,7 @@ class Article(models.Model):
     total_citations = models.IntegerField(default=None, blank=True, null=True)
     date_created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     year = YearField(default=None, blank=True, null=True)
+    url = models.URLField(default=None, blank=True, null=True)
     def __str__(self) -> str:
         return self.title
     
