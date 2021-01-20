@@ -188,6 +188,8 @@ AZURE_ACCOUNT_KEY = 's4PvaBqtyGwMpUCn5VbQ8EzjpYMVf2yMD+Sf26y0IO3Ei7EqT0+AaUumTSE
 
 
 
+STATICFILES_STORAGE = 'storages.backends.azure_storage.AzureStorage'
+DEFAULT_FILE_STORAGE = 'Scholar.custom_azure.AzureMediaStorage'
 
 STATIC_LOCATION = "static"
 MEDIA_LOCATION = "http://{AZURE_ACCOUNT_NAME}.blob.core.windows.net/media"
@@ -195,14 +197,12 @@ MEDIA_LOCATION = "http://{AZURE_ACCOUNT_NAME}.blob.core.windows.net/media"
 MEDIA_ROOT='http://{AZURE_ACCOUNT_NAME}.blob.core.windows.net'
 
 AZURE_CUSTOM_DOMAIN = f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net'
-AZURE_LOCATION=f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net'
+# AZURE_LOCATION=f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net'
+AZURE_LOCATION = 'sqldbauditlogs'
 AZURE_CONTAINER = 'sqldbauditlogs'
 STATIC_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{STATIC_LOCATION}/'
 MEDIA_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{MEDIA_LOCATION}/'
 
-
-STATICFILES_STORAGE = 'storages.backends.azure_storage.AzureStorage'
-DEFAULT_FILE_STORAGE = 'Scholar.custom_azure.AzureMediaStorage'
 
 STATIC_URL = '/static/'
 
