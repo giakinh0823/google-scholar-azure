@@ -97,6 +97,8 @@ WSGI_APPLICATION = 'Scholar.wsgi.application'
 #     }
 # }
 
+
+
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'sql_server.pyodbc',
