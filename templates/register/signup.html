@@ -56,27 +56,6 @@
     <button type="submit" class="btn btn-outline-dark mb-5 mt-3 button-primary-orangered" style="">Register</button>
 </form>
 
-<style>
-    .button-primary-orangered{
-        padding: 6px 30px;
-        border: 1px solid black;
-    }
-    .button-primary-orangered:hover{
-        background-color:  orangered;
-        color: #212529;
-        border: 1px solid orangered;
-    }
-    .button--outline--primary{
-        {% comment %} border: 1px solid orangered; {% endcomment %}
-        background-color: #fff;
-    }
-    .button--outline--primary:focus{
-        outline: none;
-        border: 1px solid orangered;
-        box-shadow: none;
-        background-color: #fff!important;
-    }
-</style>
 <!-- <div class="container justify-content-center d-flex">
     <form action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %} {{user_form.as_p}} {{profile_form.as_p}}

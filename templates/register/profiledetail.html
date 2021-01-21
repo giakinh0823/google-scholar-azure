@@ -2,38 +2,7 @@
 {% load index %}
 {% load url_replace %}
 
-<style>
-    #chartdiv {
-      width: 100%;
-      height: 380px;
-    }
-    .btn-outline-orange{
-        color: orangered;
-        border:1px solid orangered;
-    }
-    .btn-outline-orange:hover{
-        color: #dadada;
-        background-color: orangered;
-    }
-    .btn-outline-orange:focus{
-        box-shadow: none;
-        border: 1px solid orangered;
-        outline: none;    
-    }
-    .text-primary-orange{
-        color: orangered;
-        font-weight: 400;
-    }
-    .page-link:hover{
-        background-color: rgba(255, 68, 0, 0.185);
-        border: none;
-        border-color: #e6e1de;
-    }
-    .page-link:focus{
-        box-shadow:0 0 0 0.15rem rgba(253, 89, 13, 0.25);    
-        background-color:  #e6e1de;
-    }
-</style>
+
     <!-- Chart code -->
 <script>
     am4core.ready(function() {
@@ -185,12 +154,12 @@
                                 <td class="col">
                                     <a type="button" data-bs-toggle="modal" data-bs-target="#article-{{article.id}}">
                                         <div class="d-flex w-100 justify-content-between">
-                                            <h5 class="mb-1" style="margin:0;overflow: hidden;text-overflow: ellipsis; display: -webkit-box;-webkit-line-clamp: 2; -webkit-box-orient: vertical;">{{article.title}}</h5>
+                                            <h5 class="mb-1 textlinelimit">{{article.title}}</h5>
                                         </div>
                                         {% if article.author %}
-                                        <p class="mb-1"  style="margin:0;overflow: hidden;text-overflow: ellipsis; display: -webkit-box;-webkit-line-clamp: 2; -webkit-box-orient: vertical;">{{article.author}}</p>
+                                        <p class="mb-1 textlinelimit"  >{{article.author}}</p>
                                         {% endif %} {% if article.conference %}
-                                        <p class="mb-1"  style="margin:0;overflow: hidden;text-overflow: ellipsis; display: -webkit-box;-webkit-line-clamp: 2; -webkit-box-orient: vertical;">{{article.conference}}</p>
+                                        <p class="mb-1 textlinelimit" >{{article.conference}}</p>
                                         {% endif %}
                                     </a>
                                 </td>
