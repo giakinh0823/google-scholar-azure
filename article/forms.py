@@ -12,5 +12,5 @@ class CustomSelectMultiple(ModelMultipleChoiceField):
 class ArticleForm(forms.ModelForm):
     class Meta():
         model = Article
-        fields = ('title','author','publication_date','journal','book','volume','issue' ,'conference', 'page', 'publisher', 'description', 'total_citations') 
+        fields = ('title','author','publication_date','journal','book','volume','issue' ,'conference', 'page', 'publisher', 'description','url', 'total_citations') 
         

@@ -249,8 +249,12 @@
                                                                         class="form-control button--outline--primary">
                                                                 </div>
                                                                 <div class="mb-3 w-70">
-                                                                    <label for="id_title" class="form-label text-primary-orange">Description</label>
+                                                                    <label for="id_description" class="form-label text-primary-orange">Description</label>
                                                                     <textarea name="description" cols="40" rows="10" id="id_description" class="form-control button--outline--primary"></textarea>
+                                                                </div>
+                                                                <div class="mb-3 w-70">
+                                                                    <label for="id_url" class="form-label text-primary-orange">Url</label>
+                                                                    <input type="url" name="url"id="id_url" class="form-control button--outline--primary">
                                                                 </div>
                                                                 <div class="mb-3 w-70">
                                                                     <label for="id_total_citations" class="form-label text-primary-orange">Total citations</label>
@@ -323,7 +327,7 @@
                                         <div class="modal-body">
                                             <div class="mb-3" style="padding-left:20px;">
                                                 <h5 style="">
-                                                    <a href="#"
+                                                    <a href="{{article.url}}"
                                                         style="text-decoration:none; color:orangered">{{article.title}}</a>
                                                 </h5>
                                             </div>
