@@ -1,5 +1,6 @@
 {% extends 'base/base.html' %} {% block body %}
 {% load static %}
+
 <div class="container">
     <div class="w-100 d-flex justify-content-center mt-5">
         <img src="https://i1.wp.com/hanoi.fpt.edu.vn/wp-content/uploads/2018/01/logo.png?fit=237%2C64&ssl=1" alt="" style="width:220px">
@@ -11,7 +12,7 @@
                 <p class="" style="font-size:15px;color:red; outline:none; border:none; font-weight:300; position:absolute; top:90%; right:30%" id="searchsmall">Search</p>
             </div>
             <form action="{% url 'article:article' %}" method="GET" class="d-flex" id="homeSearchForm">
-                <input type="text" name="title" id="id_title" class="form-control button--outline--primary">
+                <input type="text" name="search" id="search" class="form-control button--outline--primary">
                 <button type="submit" class="btn button-primary-orangered">Search</button>
             </form>
             <div class="d-block text-center mt-3" style="radioArticle1">

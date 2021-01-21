@@ -6,6 +6,7 @@ from .models import *
 from .filters import *
 import re
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Q
 
 
 import nltk
@@ -24,8 +25,10 @@ from nltk import pos_tag
 def article(request):
     articles = Article.objects.all() 
     if request.GET:
-        articlesFilter = ArticleFilter(request.GET, queryset=articles)
-        articles= articlesFilter.qs
+        # articlesFilter = ArticleFilter(request.GET, queryset=articles)
+        # articles= articlesFilter.qs
+        articles = Article.objects.filter(Q(title__icontains=request.GET['search']) | Q(author__icontains=request.GET['search']))
+        
         if articles:
             title = str(articles[0]).lower()
             title = title.strip()
@@ -35,11 +38,11 @@ def article(request):
             text_tokens = pos_tag(text_tokens) 
             title=[x for (x,y) in text_tokens if y not in ('PRP$', 'VBZ','POS', ':','DT')]
             try:
-                getTitle = request.GET['title']
+                getTitle = request.GET['search']
             except:
                 getTitle = None 
             if getTitle:
-                keywords = str(request.GET['title']).strip()
+                keywords = str(request.GET['search']).strip()
                 text_tokens = nltk.word_tokenize(keywords)
                 text_tokens = [word for word in text_tokens if not word in stopwords.words('english')]
                 text_tokens = pos_tag(text_tokens) 
@@ -64,7 +67,7 @@ def article(request):
             articles = paginator.page(1)
         except EmptyPage:
             articles = paginator.page(paginator.num_pages)
-        return render(request, 'article/article.html', {'articles': articles, 'articlesFilter': ArticleFilter()})
+        return render(request, 'article/article.html', {'articles': articles, })
     paginator = Paginator(articles, 15)
     pageNumber = request.GET.get('page',1)
     try:
@@ -73,7 +76,7 @@ def article(request):
         articles = paginator.page(1)
     except EmptyPage:
         articles = paginator.page(paginator.num_pages)
-    return render(request, 'article/article.html', {'articles': articles, 'articlesFilter': ArticleFilter()})
+    return render(request, 'article/article.html', {'articles': articles})
 
 @login_required
 def createarticle(request):

@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     'register',
     'article',
     'storages',
+    'django_filters',
 ]
 
 
