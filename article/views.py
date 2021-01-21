@@ -27,9 +27,14 @@ def article(request):
     if request.GET:
         # articlesFilter = ArticleFilter(request.GET, queryset=articles)
         # articles= articlesFilter.qs
-        articles = Article.objects.filter(Q(title__icontains=request.GET['search']) | Q(author__icontains=request.GET['search']))
+        try:
+            getTitle = request.GET['search']
+        except:
+            getTitle = None 
+        if getTitle:
+            articles = Article.objects.filter(Q(title__icontains=request.GET['search']) | Q(author__icontains=request.GET['search']))
         
-        if articles:
+        if getTitle and articles:
             title = str(articles[0]).lower()
             title = title.strip()
             
@@ -37,10 +42,6 @@ def article(request):
             text_tokens = [word for word in text_tokens if not word in stopwords.words('english')]
             text_tokens = pos_tag(text_tokens) 
             title=[x for (x,y) in text_tokens if y not in ('PRP$', 'VBZ','POS', ':','DT')]
-            try:
-                getTitle = request.GET['search']
-            except:
-                getTitle = None 
             if getTitle:
                 keywords = str(request.GET['search']).strip()
                 text_tokens = nltk.word_tokenize(keywords)
