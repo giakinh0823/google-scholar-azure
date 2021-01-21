@@ -1,5 +1,6 @@
 {% extends 'base/base.html' %} {% block body %} {% load static %}
 {% load index %}
+{% load url_replace %}
 
 <style>
     #chartdiv {
@@ -22,6 +23,15 @@
     .text-primary-orange{
         color: orangered;
         font-weight: 400;
+    }
+    .page-link:hover{
+        background-color: rgba(255, 68, 0, 0.185);
+        border: none;
+        border-color: #e6e1de;
+    }
+    .page-link:focus{
+        box-shadow:0 0 0 0.15rem rgba(253, 89, 13, 0.25);    
+        background-color:  #e6e1de;
     }
 </style>
     <!-- Chart code -->
@@ -324,6 +334,43 @@
                             {% endfor %}
                         </tbody>
                     </table>
+                    <div class="d-flex w-100 justify-content-center mt-5 mb-5">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+                                {% if articles.has_previous %}
+                                <li class="page-item"><a class="page-link"  href="?{% url_replace page=articles.previous_page_number %}" style="color:orangered">&laquo;</a></li>
+                                {% else %}
+                                <li class="page-item disabled"><a class="page-link disabled" style="color:orangered">&laquo;</a></li>
+                                {% endif %}
+                        
+                                {% if articles.number > 3 %}
+                                <li class="page-item"><a class="page-link" href="?{% url_replace page=1 %}" style="color:orangered"><i>1</i></a></li>
+                                {% endif %}
+                        
+                                {% for i in articles.paginator.page_range %}
+                                    {% if i > articles.number|add:"-2" %}
+                                        {% if i < articles.number|add:"2" %}
+                                            {% if articles.number == i %}
+                                                <li class="page-item active" aria-current="page"><a class="page-link active" style="background-color: orangered; border-color:orangered">{{ i }}</a></li>
+                                            {% else %}
+                                                <li class="page-item"><a class="page-link" href="?{% url_replace page=i %}" style="color:orangered">{{ i }}</a></li>
+                                            {% endif %} 
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                        
+                                {% if articles.number < articles.paginator.num_pages|add:"-2" %}
+                                <li class="page-item"><a class="page-link" href="?{% url_replace page=articles.paginator.num_pages %}" style="color:orangered"><i>{{ articles.paginator.num_pages }}</i></a></li>
+                                {% endif %}
+                        
+                                {% if articles.has_next %}
+                                <li class="page-item"><a class="page-link" href="?{% url_replace page=articles.next_page_number %}" style="color:orangered">&raquo;</a></li>
+                                {% else %}
+                                <li class="page-item disabled"><a  class="page-link disabled" style="color:orangered">&raquo;</a></li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
                 </div>
             </div>
         </div>

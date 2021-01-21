@@ -34,7 +34,7 @@ SECRET_KEY = '+x4!f602mag83_ul4jez)x$h+bh^&#dh51x@ow(s3@1u@46-g6'
 
 # ALLOWED_HOSTS = []
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 

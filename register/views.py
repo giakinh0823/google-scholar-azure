@@ -11,6 +11,8 @@ from article.forms import ArticleForm
 from article.models import *
 from django.contrib.auth.decorators import login_required,user_passes_test
 from django.contrib import messages
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 
 
 
@@ -161,6 +163,14 @@ def profile(request):
     coAuthors = []
     for author in authorlist:
         coAuthors.append(author.coAuthor.id)
+    paginator = Paginator(articles, 15)
+    pageNumber = request.GET.get('page',1)
+    try:
+        articles = paginator.page(pageNumber)
+    except PageNotAnInteger:
+        articles = paginator.page(1)
+    except EmptyPage:
+        articles = paginator.page(paginator.num_pages)
     return render(request, 'register/profile.html', {'profile': profile, 'articles': articles, 'labels': labels, 'data': data,'labeltitle':labeltitle[:100],'datatitle':datatitle[:100] ,'CoAuthorForm': CoAuthorForm(), 'profilelist': profilelist, 'coAuthorList': coAuthors, 'articleForm': ArticleForm(), 'authorlist': authorlist, 'totalCitations': totalCitations, 'totalCitationsSince': totalCitationsSince})
 
 
@@ -170,6 +180,24 @@ def listprofile(request):
     if request.GET:
         profileFilter = ProfileFilter(request.GET, queryset=listprofile)
         listprofile= profileFilter.qs
+        paginator = Paginator(listprofile, 15)
+        pageNumber = request.GET.get('page',1)
+        try:
+            listprofile = paginator.page(pageNumber)
+        except PageNotAnInteger:
+            listprofile = paginator.page(1)
+        except EmptyPage:
+            listprofile = paginator.page(paginator.num_pages)
+        return render(request, 'register/listprofile.html', {'listprofile': listprofile, 'profileFilter': ProfileFilter()})
+        
+    paginator = Paginator(listprofile, 15)
+    pageNumber = request.GET.get('page',1)
+    try:
+        listprofile = paginator.page(pageNumber)
+    except PageNotAnInteger:
+        listprofile = paginator.page(1)
+    except EmptyPage:
+        listprofile = paginator.page(paginator.num_pages)
     return render(request, 'register/listprofile.html', {'listprofile': listprofile, 'profileFilter': ProfileFilter()})
 
 
@@ -238,6 +266,14 @@ def profiledetail(request, profile_pk):
         articlelist = Article.objects.filter(user = profile.user)
     articles = Article.objects.filter(user = profile.user)
     authorlist = CoAuthor.objects.filter(author = profile)
+    paginator = Paginator(articles, 15)
+    pageNumber = request.GET.get('page',1)
+    try:
+        articles = paginator.page(pageNumber)
+    except PageNotAnInteger:
+        articles = paginator.page(1)
+    except EmptyPage:
+        articles = paginator.page(paginator.num_pages)
     return render(request, 'register/profiledetail.html', {'profile': profile, 'articles': articles, 'labels': labels,'data': data,'labeltitle':labeltitle[:100], 'datatitle':datatitle[:100],  'authorlist': authorlist, 'totalCitations': totalCitations, 'totalCitationsSince': totalCitationsSince})
 
 def searchCoauthor(request):

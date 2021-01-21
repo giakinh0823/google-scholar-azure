@@ -5,6 +5,7 @@ from .forms import *
 from .models import *
 from .filters import *
 import re
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 import nltk
@@ -33,26 +34,45 @@ def article(request):
             text_tokens = [word for word in text_tokens if not word in stopwords.words('english')]
             text_tokens = pos_tag(text_tokens) 
             title=[x for (x,y) in text_tokens if y not in ('PRP$', 'VBZ','POS', ':','DT')]
+            try:
+                getTitle = request.GET['title']
+            except:
+                getTitle = None 
+            if getTitle:
+                keywords = str(request.GET['title']).strip()
+                text_tokens = nltk.word_tokenize(keywords)
+                text_tokens = [word for word in text_tokens if not word in stopwords.words('english')]
+                text_tokens = pos_tag(text_tokens) 
+                keywords = [x for (x,y) in text_tokens if y not in ('PRP$', 'VBZ','POS', ':','DT') and x.lower() in title]
             
-            keywords = str(request.GET['title']).strip()
-            text_tokens = nltk.word_tokenize(keywords)
-            text_tokens = [word for word in text_tokens if not word in stopwords.words('english')]
-            text_tokens = pos_tag(text_tokens) 
-            print(text_tokens)
-            keywords = [x for (x,y) in text_tokens if y not in ('PRP$', 'VBZ','POS', ':','DT') and x.lower() in title]
-            print(keywords)
-            
-            for keyword in keywords:
-                try:
-                    keywordResearch = KeywordResearch.objects.get(keyword = keyword.lower())
-                except KeywordResearch.DoesNotExist:
-                    keywordResearch = None
-                if keywordResearch:
-                    keywordResearch.quantity += 1
-                    keywordResearch.save()
-                else:
-                    keywordResearch = KeywordResearch(keyword = keyword.lower(), quantity = 1)
-                    keywordResearch.save()
+                for keyword in keywords:
+                    try:
+                        keywordResearch = KeywordResearch.objects.get(keyword = keyword.lower())
+                    except KeywordResearch.DoesNotExist:
+                        keywordResearch = None
+                    if keywordResearch:
+                        keywordResearch.quantity += 1
+                        keywordResearch.save()
+                    else:
+                        keywordResearch = KeywordResearch(keyword = keyword.lower(), quantity = 1)
+                        keywordResearch.save()
+        paginator = Paginator(articles, 15)
+        pageNumber = request.GET.get('page',1)
+        try:
+            articles = paginator.page(pageNumber)
+        except PageNotAnInteger:
+            articles = paginator.page(1)
+        except EmptyPage:
+            articles = paginator.page(paginator.num_pages)
+        return render(request, 'article/article.html', {'articles': articles, 'articlesFilter': ArticleFilter()})
+    paginator = Paginator(articles, 15)
+    pageNumber = request.GET.get('page',1)
+    try:
+        articles = paginator.page(pageNumber)
+    except PageNotAnInteger:
+        articles = paginator.page(1)
+    except EmptyPage:
+        articles = paginator.page(paginator.num_pages)
     return render(request, 'article/article.html', {'articles': articles, 'articlesFilter': ArticleFilter()})
 
 @login_required
