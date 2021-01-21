@@ -24,4 +24,5 @@ def home(request):
     # for row in cursor:
     #     print('row = %r' % (row,))
     
+
     return render(request, 'home/index.html')
