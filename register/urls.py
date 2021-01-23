@@ -15,7 +15,11 @@ urlpatterns = [
     path('profile/addArticle/', views.addArticle, name='addArticle'),
     path('profile/searchCoauthor/', views.searchCoauthor, name='searchCoauthor'),
     path('listprofile/', views.listprofile, name='listprofile'),
-    path('<int:profile_pk>/profiledetail/', views.profiledetail, name ="profiledetail")
+    path('<int:profile_pk>/profiledetail/', views.profiledetail, name ="profiledetail"),
+    
+    #update data
+    path('profile/updateData/', views.updateData, name='updateData'),
+    path('profile/updateArticle/', views.updateArticle, name='updateArticle'),
 ]
 urlpatterns += staticfiles_urlpatterns()
 # urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

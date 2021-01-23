@@ -34,26 +34,26 @@ SECRET_KEY = '+x4!f602mag83_ul4jez)x$h+bh^&#dh51x@ow(s3@1u@46-g6'
 
 # ALLOWED_HOSTS = []
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'fptscholar.azurewebsites.net']
 
-import logging
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['console'],
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
-        },
-    },
-}
+# import logging
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'console': {
+#             'class': 'logging.StreamHandler',
+#         },
+#     },
+#     'loggers': {
+#         'django': {
+#             'handlers': ['console'],
+#             'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
+#         },
+#     },
+# }
 
 
 # Application definition
@@ -136,7 +136,7 @@ WSGI_APPLICATION = 'Scholar.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'sql_server.pyodbc',
-        'NAME': 'dataScholar',
+        'NAME': 'dataScholarFPT',
         'USER': 'giakinh0823',
         'PASSWORD': 'Danhancach0823',
         'HOST': 'tcp:database-giakinh.database.windows.net',
@@ -150,7 +150,7 @@ DATABASES = {
 }
 
 # set this to False if you want to turn off pyodbc's connection pooling
-# DATABASE_CONNECTION_POOLING = False
+DATABASE_CONNECTION_POOLING = False
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators

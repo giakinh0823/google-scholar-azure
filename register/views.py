@@ -1,3 +1,4 @@
+import asyncio
 from django.http.response import JsonResponse
 from article.models import Article
 from article.views import article
@@ -13,8 +14,13 @@ from django.contrib.auth.decorators import login_required,user_passes_test
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+#update data
 
-
+from article.models import Article
+from Scholar.getDataScholar import data_scrap,data_profile
+from register.models import UserProfile
+from asgiref.sync import sync_to_async
+import asyncio
 
 import nltk
 nltk.download('stopwords') #if can't not run please remove comment in here
@@ -74,7 +80,6 @@ def loginuser(request):
 def logoutuser(request):
     logout(request)
     return redirect('home:index')
-
 
 @login_required
 def profile(request):
@@ -174,9 +179,8 @@ def profile(request):
     return render(request, 'register/profile.html', {'profile': profile, 'articles': articles, 'labels': labels, 'data': data,'labeltitle':labeltitle[:100],'datatitle':datatitle[:100] ,'CoAuthorForm': CoAuthorForm(), 'profilelist': profilelist, 'coAuthorList': coAuthors, 'articleForm': ArticleForm(), 'authorlist': authorlist, 'totalCitations': totalCitations, 'totalCitationsSince': totalCitationsSince})
 
 
-
-def listprofile(request):
-    listprofile = UserProfile.objects.all() 
+def findProfile(request):
+    listprofile =  UserProfile.objects.all()
     if request.GET:
         profileFilter = ProfileFilter(request.GET, queryset=listprofile)
         listprofile= profileFilter.qs
@@ -188,8 +192,8 @@ def listprofile(request):
             listprofile = paginator.page(1)
         except EmptyPage:
             listprofile = paginator.page(paginator.num_pages)
-        return render(request, 'register/listprofile.html', {'listprofile': listprofile, 'profileFilter': ProfileFilter()})
-        
+        return listprofile
+    
     paginator = Paginator(listprofile, 15)
     pageNumber = request.GET.get('page',1)
     try:
@@ -198,8 +202,12 @@ def listprofile(request):
         listprofile = paginator.page(1)
     except EmptyPage:
         listprofile = paginator.page(paginator.num_pages)
-    return render(request, 'register/listprofile.html', {'listprofile': listprofile, 'profileFilter': ProfileFilter()})
+    return listprofile
 
+def listprofile(request):
+    listprofile = []
+    listprofile = findProfile(request)
+    return render(request, 'register/listprofile.html', {'listprofile': listprofile, 'profileFilter': ProfileFilter()})
 
 
 def profiledetail(request, profile_pk):
@@ -303,6 +311,34 @@ def addArticle(request):
         else:
             raise forms.ValidationError("wrong format")
         return JsonResponse({"ok": "ok"})
+    
+    
+    
+
+def getdataProfile(request):
+    if request.is_ajax():
+        str = 'acdefghijklmnopqrstuvwxyz'
+        # str = 'abcdefghijklmnopqrstuvwxyz'
+        for item in str:
+            data_profile('https://scholar.google.com/citations?hl=en&view_op=search_authors&mauthors='+ item)
+    
+
+def getdataArticle(request):
+    if request.is_ajax():
+        profiles = UserProfile.objects.all()
+        for profile in profiles:
+            print("Update article profile: "+ profile.name)
+            if 'scholar.google.com' in str(profile.homepage):
+                data_scrap(profile.homepage)
+
+def updateData(request):
+    getdataProfile(request)
+    return redirect('register:profile')
+
+def updateArticle(request):
+    getdataArticle(request)
+    return redirect('register:profile')
+
     
     
 
