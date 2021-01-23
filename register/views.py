@@ -13,6 +13,8 @@ from article.models import *
 from django.contrib.auth.decorators import login_required,user_passes_test
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Q
+
 
 #update data
 
@@ -317,10 +319,16 @@ def addArticle(request):
 
 def getdataProfile(request):
     if request.is_ajax():
-        str = 'acdefghijklmnopqrstuvwxyz'
+        az = 'acdefghijklmnopqrstuvwxyz'
         # str = 'abcdefghijklmnopqrstuvwxyz'
-        for item in str:
-            data_profile('https://scholar.google.com/citations?hl=en&view_op=search_authors&mauthors='+ item)
+        for item in az:
+            word = item
+            profiles = UserProfile.objects.filter(name__contains=word)
+            page = len(profiles)
+            while page % 10 !=0:
+                page -= 1
+            number = str(page) 
+            data_profile('https://scholar.google.com/citations?view_op=search_authors&hl=en&mauthors='+ item +'&astart='+number)
     
 
 def getdataArticle(request):
@@ -329,7 +337,7 @@ def getdataArticle(request):
         for profile in profiles:
             print("Update article profile: "+ profile.name)
             if 'scholar.google.com' in str(profile.homepage):
-                data_scrap(profile.homepage)
+                data_scrap(profile.homepage, profile.user)
 
 def updateData(request):
     getdataProfile(request)

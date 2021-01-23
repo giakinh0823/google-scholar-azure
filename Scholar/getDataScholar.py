@@ -2,6 +2,7 @@
 # import build-in packages
 import time
 import os
+from pandas.core.tools.datetimes import to_datetime
 import pip
 import warnings
 from selenium.webdriver.support.ui import WebDriverWait
@@ -197,7 +198,7 @@ def data_profile(link):
 
     
 
-def data_scrap(link):
+def data_scrap(link,user):
     # Empty lists for storing information
     list_of_authors = []
     list_of_citation = []
@@ -276,6 +277,8 @@ def data_scrap(link):
     clicks_on_article = driver.find_elements_by_class_name("gsc_a_at")
     clicks_on_X_button = driver.find_elements_by_id("gs_md_cita-d-x")
 
+    index = 0
+    
     for button in clicks_on_article:
         button.click()
         time.sleep(2)
@@ -328,7 +331,7 @@ def data_scrap(link):
             volume = soup.find(text="Volume").find_next().text
             list_of_volume.append(volume)
         except AttributeError:
-            volume = ""
+            volume = 0
             list_of_volume.append(volume)
         try:
             issue = soup.find(text="Issue").find_next().text
@@ -348,9 +351,53 @@ def data_scrap(link):
         except AttributeError:
             description = ""
             list_of_description.append(description)
-
+            
+        if publication_date == "":
+            Time=None
+        else:
+            Time = to_datetime(str(publication_date), errors='coerce')
+        
+        if volume==0:
+            volume==None
+        
+        getyear = list_of_year[index]
+        if getyear == "":
+            getyear=None
+        totle_citation = list_of_citation[index]
+        if totle_citation=="":
+           totle_citation=None 
+        try:
+            newarticle = Article.objects.get(user = user, 
+                             title = fix_encoding(list_of_articles[index]), 
+                             author=fix_encoding(list_of_authors[index]), 
+                             total_citations=list_of_citation[index],
+                             year=getyear,
+                             url=list_of_pdf[index],)
+        except:
+            newarticle=None
+        print(newarticle)
+        if newarticle==None:
+            newarticle = Article(user = user, 
+                             title = fix_encoding(list_of_articles[index]), 
+                             author=fix_encoding(list_of_authors[index]), 
+                             publication_date= str(Time.date()),
+                             journal=fix_encoding(journal),
+                             book=fix_encoding(journal),
+                             volume=volume,
+                             issue= fix_encoding(issue),
+                             conference=fix_encoding(conference),
+                             page=page,
+                             publisher=fix_encoding(publisher),
+                             description=fix_encoding(description),
+                             total_citations=totle_citation,
+                             year=getyear,
+                             url=list_of_pdf[index],)
+            newarticle.save()
+            print(newarticle)
+        index+=1
         for button1 in clicks_on_X_button:
             button1.click()
+        
     driver.close()
     
     for x in range(0, len(list_of_articles)):
