@@ -355,8 +355,8 @@ def data_scrap(link,user):
         if publication_date == "":
             Time=None
         else:
-            Time = to_datetime(str(publication_date), errors='coerce')
-        
+            Time = to_datetime(str(publication_date), errors='coerce').date()
+        print(time)
         if volume==0:
             volume==None
         
@@ -380,7 +380,7 @@ def data_scrap(link,user):
             newarticle = Article(user = user, 
                              title = fix_encoding(list_of_articles[index]), 
                              author=fix_encoding(list_of_authors[index]), 
-                             publication_date= str(Time.date()),
+                             publication_date= Time,
                              journal=fix_encoding(journal),
                              book=fix_encoding(journal),
                              volume=volume,

@@ -17,3 +17,5 @@
 [0124/044557.703:ERROR:exception_snapshot_win.cc(99)] thread ID 928 not found in process
 [0124/044557.739:ERROR:process_reader_win.cc(123)] NtOpenThread: {Access Denied} A process has requested access to an object, but has not been granted those access rights. (0xc0000022)
 [0124/044557.739:ERROR:exception_snapshot_win.cc(99)] thread ID 4992 not found in process
+[0124/060612.422:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[0124/110959.661:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)

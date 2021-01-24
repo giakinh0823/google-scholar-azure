@@ -83,13 +83,11 @@ def logoutuser(request):
     logout(request)
     return redirect('home:index')
 
-@login_required
-def profile(request):
+
+def getCitations(articles):
+    articlelist=articles
     labels = []
     data = []
-    labeltitle = []
-    datatitle = []
-    articlelist = Article.objects.filter(user = request.user)
     totalCitations=0
     totalCitationsSince=0
     if articlelist:
@@ -120,11 +118,13 @@ def profile(request):
                             if x>=2016:
                                 totalCitationsSince+=int(article.total_citations)
             data.append(cyted)
-    
-    profile = UserProfile.objects.get(user = request.user)
-    profilelist = UserProfile.objects.all()
-    articles = Article.objects.filter(user = request.user)
+    return  labels, data, totalCitations, totalCitationsSince
+
+
+def getWordCloud(articles):
     listarticle=articles
+    labeltitle = []
+    datatitle = []
     for item in listarticle:
             text_tokens = nltk.word_tokenize(str(item.title))
             text_tokens = [word for word in text_tokens if not word in stopwords.words('english')]
@@ -147,8 +147,12 @@ def profile(request):
     # datatitle, labeltitle = zip(*sorted(zip(datatitle, labeltitle)))
     datatitle=datatitle[::-1] #reverse list
     labeltitle=labeltitle[::-1] #reverse list
+    return labeltitle, datatitle
     
-    if request.is_ajax():
+
+def setCoAuthor(request):
+     if request.is_ajax():
+        profile = UserProfile.objects.get(user = request.user)
         idAuthor = request.POST.get('id')
         author = UserProfile.objects.get(id = idAuthor) #id coAuthor
         try: 
@@ -164,12 +168,32 @@ def profile(request):
         profile = []
         for author in coauthorlist:
             profile.append(author.coAuthor)
-        return render(request, 'register/listcoAuthorProfile.html', {'authorlist':coauthorlist})
-    
+        return coauthorlist
+
+@login_required
+def profile(request):
+        
+    profile = UserProfile.objects.get(user = request.user)
+    profilelist = UserProfile.objects.all()
+    articles = Article.objects.filter(user = request.user)
     authorlist = CoAuthor.objects.filter(author = profile)
+    
+    #set-co-Author
+    if request.is_ajax():
+        coauthorlist = setCoAuthor(request)
+        return render(request, 'register/listcoAuthorProfile.html', {'authorlist':coauthorlist})
+        
+    
+    #co-Author
     coAuthors = []
     for author in authorlist:
         coAuthors.append(author.coAuthor.id)
+        
+    #set-map
+    labels, data, totalCitations, totalCitationsSince = getCitations(articles)
+    labeltitle, datatitle = getWordCloud(articles)
+        
+    #page
     paginator = Paginator(articles, 15)
     pageNumber = request.GET.get('page',1)
     try:
@@ -178,6 +202,7 @@ def profile(request):
         articles = paginator.page(1)
     except EmptyPage:
         articles = paginator.page(paginator.num_pages)
+    
     return render(request, 'register/profile.html', {'profile': profile, 'articles': articles, 'labels': labels, 'data': data,'labeltitle':labeltitle[:100],'datatitle':datatitle[:100] ,'CoAuthorForm': CoAuthorForm(), 'profilelist': profilelist, 'coAuthorList': coAuthors, 'articleForm': ArticleForm(), 'authorlist': authorlist, 'totalCitations': totalCitations, 'totalCitationsSince': totalCitationsSince})
 
 
