@@ -1,5 +1,6 @@
 import asyncio
-from django.http.response import JsonResponse
+from time import time
+from django.http.response import HttpResponse, JsonResponse
 from article.models import Article
 from article.views import article
 from django.shortcuts import render,redirect
@@ -150,9 +151,8 @@ def getWordCloud(articles):
     return labeltitle, datatitle
     
 
-def setCoAuthor(request):
+def setCoAuthor(request, profile):
      if request.is_ajax():
-        profile = UserProfile.objects.get(user = request.user)
         idAuthor = request.POST.get('id')
         author = UserProfile.objects.get(id = idAuthor) #id coAuthor
         try: 
@@ -180,7 +180,7 @@ def profile(request):
     
     #set-co-Author
     if request.is_ajax():
-        coauthorlist = setCoAuthor(request)
+        coauthorlist = setCoAuthor(request, profile)
         return render(request, 'register/listcoAuthorProfile.html', {'authorlist':coauthorlist})
         
     
@@ -205,10 +205,11 @@ def profile(request):
     
     return render(request, 'register/profile.html', {'profile': profile, 'articles': articles, 'labels': labels, 'data': data,'labeltitle':labeltitle[:100],'datatitle':datatitle[:100] ,'CoAuthorForm': CoAuthorForm(), 'profilelist': profilelist, 'coAuthorList': coAuthors, 'articleForm': ArticleForm(), 'authorlist': authorlist, 'totalCitations': totalCitations, 'totalCitationsSince': totalCitationsSince})
 
-
 def findProfile(request):
-    listprofile =  UserProfile.objects.all()
+    listprofile=[]
+    listprofile = UserProfile.objects.all()
     if request.GET:
+        profileFilter = []
         profileFilter = ProfileFilter(request.GET, queryset=listprofile)
         listprofile= profileFilter.qs
         paginator = Paginator(listprofile, 15)
@@ -229,7 +230,11 @@ def findProfile(request):
         listprofile = paginator.page(1)
     except EmptyPage:
         listprofile = paginator.page(paginator.num_pages)
-    return listprofile
+    return listprofile, request
+
+# async def viewArticle(request,listprofile ):
+#     print("1")
+#     return render(request, 'register/listprofile.html', {'listprofile': listprofile, 'profileFilter': ProfileFilter()})
 
 def listprofile(request):
     listprofile = []
