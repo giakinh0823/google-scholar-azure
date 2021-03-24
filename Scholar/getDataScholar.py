@@ -127,9 +127,14 @@ def data_profile(link):
                     list_of_link.append('https://scholar.google.com'+str(name.find("a",  attrs={"href": True}).get('href')))
             for avatar in tr.findAll("span", {"class": "gs_rimg gs_pp_sm"}):
                 if 'https://scholar' in str(avatar.find("img", attrs={"src": True}).get("src")):
-                    list_of_avatar.append(str(avatar.find("img", attrs={"src": True}).get("src")))
+                    avatarMediumImage = str(avatar.find("img", attrs={"src": True}).get("src"))
+                    avatarMediumImage = avatarMediumImage.replace("small_photo","medium_photo")
+                    print(avatarMediumImage)
+                    list_of_avatar.append(avatarMediumImage)
                 else:
-                    list_of_avatar.append('https://scholar.google.com' + str(avatar.find("img", attrs={"src": True}).get("src")))
+                    avatarMediumImage = str(avatar.find("img", attrs={"src": True}).get("src"))
+                    avatarMediumImage= avatarMediumImage.replace("small_photo","medium_photo")
+                    list_of_avatar.append('https://scholar.googleusercontent.com' + avatarMediumImage)
             for affiliation in tr.findAll("div", {"class": "gs_ai_aff"}):
                 list_of_Affiliation.append(affiliation.text)
             for email in tr.findAll("div", {"class": "gs_ai_eml"}):
@@ -141,9 +146,9 @@ def data_profile(link):
                 profile = UserProfile.objects.get(name=fix_encoding(list_of_name[index]),Affiliation =fix_encoding(list_of_Affiliation[index]),EmailForVerification = fix_encoding(list_of_EmailForVerification[index]), homepage = list_of_link[index])
             except:
                 profile = None
-            print(profile)
-            if profile == None:
-                print("Set data")
+            # print(profile)
+            if profile == None and "FPT University" in list_of_Affiliation[index] :
+                # print("Set data")
                 user = User(username = get_random_string(12), password=get_random_string(8))
                 user.save()
                 profile = UserProfile(user = user ,name=fix_encoding(list_of_name[index]),Affiliation =fix_encoding(list_of_Affiliation[index]),EmailForVerification = fix_encoding(list_of_EmailForVerification[index]), homepage = list_of_link[index])
@@ -175,26 +180,26 @@ def data_profile(link):
             break
             
     driver.close()
-    print(list_of_name)
-    print(list_of_link)
-    print(list_of_avatar)
-    print(list_of_Affiliation)
-    print(list_of_EmailForVerification)
+    # print(list_of_name)
+    # print(list_of_link)
+    # print(list_of_avatar)
+    # print(list_of_Affiliation)
+    # print(list_of_EmailForVerification)
     
-    # Create dataframe
-    df = pd.DataFrame(
-        list(zip(list_of_name, list_of_Affiliation, list_of_EmailForVerification,list_of_avatar, list_of_link,)),
-        columns=['name', 'Affiliation', 'EmailForVerification','avatar', 'homepage'])
+    # # Create dataframe
+    # df = pd.DataFrame(
+    #     list(zip(list_of_name, list_of_Affiliation, list_of_EmailForVerification,list_of_avatar, list_of_link,)),
+    #     columns=['name', 'Affiliation', 'EmailForVerification','avatar', 'homepage'])
 
-    # Fix unicode errors
-    df['name'] = df['name'].map(lambda x: fix_encoding(x))
-    df['Affiliation'] = df['Affiliation'].map(lambda x: fix_encoding(x))
-    df['EmailForVerification'] = df['EmailForVerification'].map(lambda x: fix_encoding(x))
+    # # Fix unicode errors
+    # df['name'] = df['name'].map(lambda x: fix_encoding(x))
+    # df['Affiliation'] = df['Affiliation'].map(lambda x: fix_encoding(x))
+    # df['EmailForVerification'] = df['EmailForVerification'].map(lambda x: fix_encoding(x))
 
-    # Output
-    df.to_csv('Profile-buff.csv', index=False)
-    file_name ='profile'+ datetime.now().strftime("%d-%m-%Y-%H-%M-%S") + ".csv"
-    df.to_csv(file_name, index=False)
+    # # Output
+    # df.to_csv('Profile-buff.csv', index=False)
+    # file_name ='profile'+ datetime.now().strftime("%d-%m-%Y-%H-%M-%S") + ".csv"
+    # df.to_csv(file_name, index=False)
 
     
 
@@ -355,8 +360,10 @@ def data_scrap(link,user):
         if publication_date == "":
             Time=None
         else:
-            Time = to_datetime(str(publication_date), errors='coerce').date()
-        print(time)
+            # Time = to_datetime(str(publication_date), errors='coerce',yearfirst=True).date()
+            Time = str(publication_date).replace('/','-');
+            # Time = str(publication_date)[:4]
+        print(Time)
         if volume==0:
             volume==None
         
@@ -382,7 +389,7 @@ def data_scrap(link,user):
                              author=fix_encoding(list_of_authors[index]), 
                              publication_date= Time,
                              journal=fix_encoding(journal),
-                             book=fix_encoding(journal),
+                             book=fix_encoding(book),
                              volume=volume,
                              issue= fix_encoding(issue),
                              conference=fix_encoding(conference),
@@ -399,7 +406,7 @@ def data_scrap(link,user):
             button1.click()
         
     driver.close()
-    
+    '''
     for x in range(0, len(list_of_articles)):
         print(list_of_articles)
 
@@ -424,7 +431,12 @@ def data_scrap(link,user):
     print("Your file is ready! Check " + str(file_name))
     print("-----------------------------------------------")
     print("PROCESS ENDED.")
-    input("Press Enter to continue...")
+    # input("Press Enter to continue...")
+    '''
+    print("-----------------------------------------------")
+    print("Your file is ready! Check " + author_name.text)
+    print("-----------------------------------------------")
+    print("PROCESS ENDED.")
 
 
 def time_ascending(name):

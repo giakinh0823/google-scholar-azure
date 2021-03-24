@@ -28,6 +28,16 @@ git clone https://github.com/giakinh0823/googleScholarAzure.git
 
 cd googleScholarAzure
 
+pip install azure==4.0.0
+pip install django-storages==1.11.1
+pip install django-filter==2.4.0
+pip install django-yearlessdate==1.3.1
+pip install django-partial-date==1.3.1
+pip install pandas==1.2.1
+pip install selenium==3.141.0
+pip install nltk
+python -m pip install Pillow
+
 > pip install -r requirements.txt
 
 

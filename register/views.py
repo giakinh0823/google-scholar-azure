@@ -349,16 +349,14 @@ def addArticle(request):
 
 def getdataProfile(request):
     if request.is_ajax():
-        az = 'acdefghijklmnopqrstuvwxyz'
-        # str = 'abcdefghijklmnopqrstuvwxyz'
-        for item in az:
-            word = item
-            profiles = UserProfile.objects.filter(name__contains=word)
-            page = len(profiles)
-            while page % 10 !=0:
-                page -= 1
-            number = str(page) 
-            data_profile('https://scholar.google.com/citations?view_op=search_authors&hl=en&mauthors='+ item +'&astart='+number)
+        az = 'fpt+university'
+        # str = 'fpt+university'
+        profiles = UserProfile.objects.all();
+        page = len(profiles)
+        while page % 10 !=0:
+            page -= 1
+        number = str(page) 
+        data_profile('https://scholar.google.com/citations?view_op=search_authors&hl=en&mauthors='+ az +'&astart='+number)
     
 
 def getdataArticle(request):
