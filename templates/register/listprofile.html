@@ -2,7 +2,7 @@
 {% load static %}
 {% load url_replace %}
 
-
+{% if listprofile %}
 <div class="container mt-5">
     <div>
         {% for profile in listprofile %}
@@ -71,5 +71,11 @@
         </nav>
         </div>
 </div>
-
+{% else %}
+<div class="d-flex w-100 justify-content-center mt-5 mb-5">
+    <div class="mt-5 mb-5">
+        <h3 class="display-6 mt-5">Not found</h3>
+    </div>
+</div>
+{% endif %}
 {% endblock body %}

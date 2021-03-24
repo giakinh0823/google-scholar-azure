@@ -28,6 +28,7 @@
 </div>
 
 <div class="container">
+    {% if articles %}
     <div class="list-group">
         {% for article in articles %}
         <a type="button" data-bs-toggle="modal" data-bs-target="#article-{{article.id}}" class="list-group-item list-group-item-action " style="display:block;min-height:160px">
@@ -214,6 +215,13 @@
         </ul>
     </nav>
     </div>
+    {% else%}
+    <div class="d-flex w-100 justify-content-center mt-5 mb-5">
+        <div class="mt-5">
+            <h3 class="display-6 mt-5">Not found</h3>
+        </div>
+    </div>
+    {% endif %}
 </div>
 
 {% endblock body %}

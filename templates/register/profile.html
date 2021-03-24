@@ -268,6 +268,7 @@
                                 </div>
                             </th>
                         </thead>
+                        {% if articles %}
                         <tbody>
                             {% for article in articles %}
                             <tr>
@@ -433,7 +434,9 @@
                             </div>
                             {% endfor %}
                         </tbody>
+                        {% endif %}
                     </table>
+                    {% if articles %}
                     <div class="d-flex w-100 justify-content-center mt-5 mb-5">
                         <nav aria-label="Page navigation example">
                             <ul class="pagination">
@@ -471,6 +474,13 @@
                             </ul>
                         </nav>
                     </div>
+                    {% else %}
+                    <div class="d-flex w-100 justify-content-center mt-5 mb-5">
+                        <div class="mt-5 mb-5">
+                            <h3 class="display-6 mt-5">Not found article</h3>
+                        </div>
+                    </div>  
+                    {% endif %}
                 </div>
             </div>
         </div>

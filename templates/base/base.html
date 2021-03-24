@@ -50,14 +50,14 @@
                     </li>
                 </ul>
             </div>
-            <form class="d-flex" method="GET" action="{% url 'register:listprofile' %}">
+            <!-- <form class="d-flex" method="GET" action="{% url 'register:listprofile' %}">
                 <input class="form-control me-2 button--ouline--none" type="text" name="name" id="id_name" placeholder="Search Profile"
                     aria-label="Search" style="width: 200px; height: 38px; margin-top:3px">
                 <button class="btn text-light button--focus--none" type="submit">
                     <span class="material-icons">
                         person_search</span>
                     </button>
-            </form>
+            </form> -->
             <div class="btn-group">
                     {% if user.is_authenticated %}
                     <a class="btn dropdown-toggle dropdown--after--none" data-bs-toggle="dropdown" data-bs-display="static"
