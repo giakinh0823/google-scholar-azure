@@ -163,10 +163,26 @@
                                             <h5 class="mb-1 textlinelimit">{{article.title}}</h5>
                                         </div>
                                         {% if article.author %}
-                                        <p class="mb-1 textlinelimit"  >{{article.author}}</p>
+                                        <p class="mb-1 textlinelimit" style=" overflow: hidden;
+                                        text-overflow: ellipsis;
+                                        display: -webkit-box;
+                                        -webkit-line-clamp: 1;
+                                        -webkit-box-orient: vertical;">{{article.author}}</p>
                                         {% endif %} {% if article.conference %}
-                                        <p class="mb-1 textlinelimit" >{{article.conference}}</p>
-                                        {% endif %}
+                                        <p class="mb-1 textlinelimit" style=" overflow: hidden;
+                                        text-overflow: ellipsis;
+                                        display: -webkit-box;
+                                        -webkit-line-clamp: 1;
+                                        -webkit-box-orient: vertical;">{{article.conference}}</p>
+                                        {% else %}
+                                        {% if article.journal %}
+                                        <p class="mb-1 textlinelimit" style=" overflow: hidden;
+                                        text-overflow: ellipsis;
+                                        display: -webkit-box;
+                                        -webkit-line-clamp: 1;
+                                        -webkit-box-orient: vertical;">{{article.journal}}</p>
+                                        {% endif %} 
+                                        {% endif %} 
                                     </a>
                                 </td>
                                 {% if article.total_citations %}

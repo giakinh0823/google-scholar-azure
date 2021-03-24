@@ -1,0 +1,229 @@
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  /* font-size: 62.5%;
+    font-size:100%; */
+}
+
+
+body {
+  /* font-family: 'Roboto', sans-serif; */
+  line-height: 1.5;
+  color: #1b1b1b;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  /* -webkit-text-size-adjust: 100%; */
+}
+
+input[type=text] {
+  /* font-size: 1.6rem;  */
+  font-weight: 400;
+}
+
+a,
+button,
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+input,
+select,
+textarea {
+  background-color: transparent;
+  border-style: none;
+  color: inherit;
+}
+
+button,
+select {
+  text-transform: none;
+}
+
+button {
+  overflow: visible;
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font: inherit;
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+main,
+menu,
+nav,
+section,
+summary {
+  display: block;
+}
+
+ul,
+li {
+  list-style: none;
+  text-decoration: none;
+  margin: 0;
+  padding: 0;
+}
+
+a:focus,
+button:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 0;
+}
+
+img {
+  border-style: none;
+}
+
+.button--focus--none:focus {
+  box-shadow: none;
+  border: none;
+  outline: none;
+}
+
+.button--ouline--none:focus {
+  box-shadow: none;
+  border: none;
+  outline: none;
+}
+
+#dropdownMenuButton::after {
+  content: none;
+}
+
+.dropdown--after--none {
+  content: none;
+}
+
+#dropdownMenuButton:focus {
+  box-shadow: none;
+  border: none;
+  outline: none;
+}
+
+.hover--primary:hover {
+  background-color: orangered;
+  color: #fff;
+}
+
+
+.button-primary-orangered {
+  padding: 6px 30px;
+  border: 1px solid black;
+}
+
+.button-primary-orangered:hover {
+  background-color: orangered;
+  color: #212529;
+  border: 1px solid orangered;
+}
+
+
+.button--outline--primary {
+  background-color: #fff;
+}
+
+
+.button--outline--primary:focus {
+  outline: none;
+  border: 1px solid orangered;
+  box-shadow: none;
+  background-color: #fff !important;
+}
+
+
+#chartdiv {
+  width: 100%;
+  height: 380px;
+}
+
+.btn-outline-orange {
+  color: orangered;
+  border: 1px solid orangered;
+}
+
+.btn-outline-orange:hover {
+  color: #dadada;
+  background-color: orangered;
+}
+
+.btn-outline-orange:focus {
+  box-shadow: none;
+  border: 1px solid orangered;
+  outline: none;
+}
+
+.text-primary-orange {
+  color: orangered;
+  font-weight: 400;
+}
+
+.page-link:hover {
+  background-color: rgba(255, 68, 0, 0.185);
+  border: none;
+  border-color: #e6e1de;
+}
+
+.page-link:focus {
+  box-shadow: 0 0 0 0.15rem rgba(253, 89, 13, 0.25);
+  background-color: #e6e1de;
+}
+
+
+
+.radio--checked--primary {}
+
+.radio--checked--primary:checked {
+  background-color: orangered;
+  border-color: orangered;
+}
+
+.radio--checked--primary:focus {
+  border-color: orangered;
+  outline: 0;
+  box-shadow: none;
+}
+
+
+/* text line  */
+.textlinelimit {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1 !important;
+  -webkit-box-orient: vertical;
+}
+
+@media only screen and (max-width: 900px) {
+  .textlinelimit {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+  }
+}
+
+.select--dropdown--hover:hover{
+  background-color: orangered;
+}
