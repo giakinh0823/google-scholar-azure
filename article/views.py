@@ -41,13 +41,13 @@ def article(request):
             text_tokens = nltk.word_tokenize(title)
             text_tokens = [word for word in text_tokens if not word in stopwords.words('english')]
             text_tokens = pos_tag(text_tokens) 
-            title=[x for (x,y) in text_tokens if y not in ('PRP$', 'VBZ','POS', ':','DT')]
+            title=[x for (x,y) in text_tokens if y not in ('PRP$', 'VBZ','POS','DT',':',')','(','.',',')]
             if getTitle:
                 keywords = str(request.GET['search']).strip()
                 text_tokens = nltk.word_tokenize(keywords)
                 text_tokens = [word for word in text_tokens if not word in stopwords.words('english')]
                 text_tokens = pos_tag(text_tokens) 
-                keywords = [x for (x,y) in text_tokens if y not in ('PRP$', 'VBZ','POS', ':','DT') and x.lower() in title]
+                keywords = [x for (x,y) in text_tokens if y not in ('PRP$', 'VBZ','POS', 'DT',':',')','(','.',',') and x.lower() in title]
             
                 for keyword in keywords:
                     try:
